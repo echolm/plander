@@ -1,0 +1,121 @@
+  10 REM plander
+  20 LET t=0: LET k=0: LET n=0
+  30 DEF FN s(t,k)=0.302*t*k
+  35 DEF FN d(n)=n/180*PI
+  38 DEF FN p(h)=ABS (h/1600-1)
+  40 BORDER 0: PAPER 0: INK 7
+  50 GO SUB 600
+  60 LET H=1600
+  70 LET G=9.8/6
+  80 LET A=110000
+  90 LET V=0
+ 100 LET T=10
+ 110 LET E=0
+ 120 LET K=0
+ 130 LET N=0
+ 140 LET F=500
+ 150 REM Start Loop
+ 160 CLS
+ 170 PRINT "Elapsed Time:   ";IN
+T E;" s"
+ 180 PRINT "Altitude:       ";IN
+T A;" m"
+ 190 PRINT "Horizontal Vel: ";IN
+T H;" m/s"
+ 200 PRINT "Vertical Vel:   ";IN
+T V;" m/s"
+ 210 PRINT "Fuel:           ";IN
+T F;" s"
+ 220 PRINT "Burn Time:      ";IN
+T T;" s"
+ 230 PRINT "Thrust: ",K;" %"
+ 240 PRINT "Thrust angle:   ";N;
+" deg"
+ 250 INPUT "Thrust (0 to 100): "
+,K
+ 260 INPUT "Thrust Angle (-90 to
+ 90):",N
+ 270 INPUT "Burn time (s)",T
+ 280 IF F<=0 THEN LET K=0
+ 290 IF N<>90 THEN GO TO 310
+ 300 LET H=H-FN s(T,K): GO TO 39
+0
+ 310 IF N<>-90 THEN GO TO 330
+ 320 LET H=H+FN s(T,K): GO TO 39
+0
+ 330 IF N<>0 THEN GO TO 350
+ 340 LET V=V-FN s(T,K): GO TO 39
+0
+ 350 IF N<90 AND N>0 OR N<0 AND
+N>-90 THEN GO TO 370
+ 360 GO TO 390
+ 370 LET V=V-(FN s(T,K)*SIN FN d
+(90-N))
+ 380 LET H=H-(FN s(T,K)*SIN FN d
+(N))
+ 390 LET V=V+(G*FN p(H))*T
+ 420 LET A=A-(V*T)
+ 430 LET E=E+T
+ 440 GO SUB 580
+ 450 IF A=0 OR A<0 THEN GO TO 47
+0
+ 455 BEEP .2,40
+ 460 GO TO 150
+ 470 REM Landing
+ 480 IF H<6 AND V<11 THEN GO TO
+540
+ 490 PRINT "": PRINT "---You cra
+shed.---": PRINT "Better luck ne
+xt time!"
+ 495 BEEP .25,0: BEEP .25,-8
+ 500 PRINT "Last known data:"
+ 510 PRINT "Horizintal Vel: ";IN
+T H: PRINT "Vertical Vel:  ";INT
+ V
+ 520 GO SUB 750: GO SUB 720
+ 530 STOP
+ 540 PRINT ""
+ 543 PRINT "***You landed succes
+sfully***": PRINT "           **
+*YAY!***"
+ 545 BEEP .25,4: BEEP .25,3: BEE
+P .25,4: BEEP .25,6
+ 550 GO SUB 720
+ 560 STOP
+ 570 REM Subs
+ 580 IF K>0 THEN LET F=F-(T*K/10
+0)
+ 590 RETURN
+ 600 CLS : PRINT "Probe Lander b
+y EC Holm"
+ 603 PRINT "Lic: GNU GPL V3"
+ 610 PRINT "": PRINT "You are at
+ Mission Control."
+ 620 PRINT "Your job is to fly t
+he lander to"
+ 630 PRINT "the surface of the m
+oon from"
+ 640 PRINT "orbit.": PRINT ""
+ 650 PRINT "The goal is to land
+with"
+ 660 PRINT "horizontal vel of 10
+m/s or less,": PRINT "and vertic
+al vel of 5m/s or"
+ 670 PRINT "less."
+ 680 PRINT "Get ready!": PRINT "
+"
+ 690 PRINT "Press any key to sta
+rt"
+ 700 IF INKEY$="" THEN GO TO 700
+ 710 RETURN
+ 720 INPUT "Play again? y/n";b$
+ 730 IF b$="y" THEN GO TO 5
+ 740 RETURN
+ 750 IF V>=11 THEN GO TO 770
+ 760 PRINT "The probe suffered m
+inor damage.": RETURN
+ 770 IF V>=51 THEN GO TO 790
+ 780 PRINT "The probe suffered m
+ajor damage.": RETURN
+ 790 PRINT "The probe was pulver
+ized.": RETURN
